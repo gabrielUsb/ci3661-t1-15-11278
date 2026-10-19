@@ -1,0 +1,10 @@
+# Artefactos de compilación de GHC
+*.hi
+*.o
+*.dyn_hi
+*.dyn_o
+/Tarea1
+/PruebasTarea1
+
+# Enunciado (no forma parte de la entrega)
+tarea1.pdf
