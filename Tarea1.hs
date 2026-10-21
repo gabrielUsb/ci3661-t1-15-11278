@@ -112,10 +112,24 @@ promedioSobreUmbral umbral xs = case foldl step (0.0, 0) xs of
 
 -- B2
 movimientosCaballo :: (Int, Int) -> [(Int, Int)]
-movimientosCaballo = undefined
+movimientosCaballo (r, c) =
+  [ (r', c')
+  | dr <- [-2, -1, 1, 2]
+  , dc <- [-2, -1, 1, 2]
+  , abs dr + abs dc == 3
+  , let r' = r + dr
+  , let c' = c + dc
+  , r' >= 1 && r' <= 8
+  , c' >= 1 && c' <= 8
+  ]
 
 enDosSaltos :: (Int, Int) -> Int
-enDosSaltos = undefined
+enDosSaltos pos = length (foldl agregarSinRepetir [] todosLosSaltos)
+  where
+    todosLosSaltos = [p2 | p1 <- movimientosCaballo pos, p2 <- movimientosCaballo p1]
+    agregarSinRepetir acc x
+      | x `elem` acc = acc
+      | otherwise    = x : acc
 
 -- B3
 miMap :: (a -> b) -> [a] -> [b]
