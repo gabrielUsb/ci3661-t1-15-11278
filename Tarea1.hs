@@ -102,7 +102,13 @@ duracion s1 s2 = case leerHora s1 of
 
 -- B1
 promedioSobreUmbral :: Double -> [Double] -> Maybe Double
-promedioSobreUmbral = undefined
+promedioSobreUmbral umbral xs = case foldl step (0.0, 0) xs of
+  (_, 0)         -> Nothing
+  (suma, cuenta) -> Just (suma / fromIntegral cuenta)
+  where
+    step (suma, cuenta) x
+      | x > umbral = (suma + x, cuenta + 1)
+      | otherwise  = (suma, cuenta)
 
 -- B2
 movimientosCaballo :: (Int, Int) -> [(Int, Int)]
