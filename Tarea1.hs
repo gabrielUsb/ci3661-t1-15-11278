@@ -5,7 +5,16 @@
 --  Carnet: 15-11278
 --
 --  Declaración de uso de herramientas de IA (obligatoria, ver enunciado):
---
+--- Utilice ia  para consultar conceptos teoricos y resolver dudas sobre:
+--  Recursión explícita con acumuladores (inversión de listas y calculo de min/max en un solo recorrido).
+--  Pattern matching de listas con literales en `leerHora` y operaciones aritmeticas con `Either`.
+--  Construccion de acumuladores en tupla dentro de `foldl` y filtrado de duplicados sin recursión.
+--  Ordenamiento implicito en listas por comprensiom (saltos de caballo).
+--  Derivacion de `miFoldl` mediante `foldr` y propiedades algebraicas para la igualdad de plegados.
+--  Todo el codigo final fue implementado, revisado y verificado manualmente. 
+--  una vez comprobado el funcionamiento inicial use el asistente para evaluacion
+--  de errores de sintaxis y semantica, asi como para la generacion de casos de prueba.
+
 -- =====================================================================
 --  No cambies el nombre del módulo ni la lista de exportación, ni las
 --  firmas de las funciones. Puedes agregar todas las funciones auxiliares

@@ -1,0 +1,81 @@
+CARNE: 15-11278, d = [1, 2, 7, 8]
+
+a) foldr (-) 0 [1, 2, 7, 8]
+= 1 - foldr (-) 0 [2, 7, 8]                  por definición de foldr en (x:xs)
+= 1 - (2 - foldr (-) 0 [7, 8])               por definición de foldr
+= 1 - (2 - (7 - foldr (-) 0 [8]))            def de foldr
+= 1 - (2 - (7 - (8 - foldr (-) 0 [])))       def de foldr
+= 1 - (2 - (7 - (8 - 0)))                    def de foldr en []
+= 1 - (2 - (7 - 8))                          evaluación de 8 - 0
+= 1 - (2 - (-1))                             "" 7 - 8
+= 1 - 3                                      "" 2 - (-1)
+= -2                                         "" 1 - 3
+
+--------------------------------------------------------------------------------------
+b)foldl (-) 0 [1, 2, 7, 8]
+= foldl (-) (0 - 1) [2, 7, 8]                por definición de foldl en (x:xs)
+= foldl (-) (-1) [2, 7, 8]                   evaluación de 0 - 1
+= foldl (-) ((-1) - 2) [7, 8]                por definición de foldl
+= foldl (-) (-3) [7, 8]                      evaluación de -1 - 2
+= foldl (-) ((-3) - 7) [8]                   por definición de foldl
+= foldl (-) (-10) [8]                        evaluación de -3 - 7
+= foldl (-) ((-10) - 8) []                   por definición de foldl
+= foldl (-) (-18) []                         evaluación de -10 - 8
+= -18                                        por definición de foldl en []
+
+-----------------------------------------------------
+c)miFoldl (-) 0 [1, 2]
+= foldr (\x g acc -> g (acc - x)) id [1, 2] 0
+    [definición de miFoldl]
+
+= (\x g acc -> g (acc - x)) 1 (foldr (\x g acc -> g (acc - x)) id [2]) 0
+    [definición de foldr en 1:[2]]
+
+= (\g acc -> g (acc - 1)) (foldr (\x g acc -> g (acc - x)) id [2]) 0
+    [β-reducción con x = 1]
+
+= (\g acc -> g (acc - 1)) ((\x g acc -> g (acc - x)) 2 (foldr (\x g acc -> g (acc - x)) id [])) 0
+    [definición de foldr en 2:[]]
+
+= (\g acc -> g (acc - 1)) ((\g acc -> g (acc - 2)) (foldr (\x g acc -> g (acc - x)) id [])) 0
+    [β-reducción con x = 2]
+
+= (\g acc -> g (acc - 1)) ((\g acc -> g (acc - 2)) id) 0
+    [definición de foldr caso base []]
+
+= (\g acc -> g (acc - 1)) (\acc -> id (acc - 2)) 0
+    [β-reducción aplicando g = id]
+
+= (\acc -> (\acc -> id (acc - 2)) (acc - 1)) 0
+    [β-reducción aplicando la función acumulada sobre g]
+
+= (\acc -> id (acc - 2)) (0 - 1)
+    [β-reducción aplicando acc = 0]
+
+= (\acc -> id (acc - 2)) (-1)
+    [evaluación aritmética de 0 - 1]
+
+= id ((-1) - 2)
+    [β-reducción aplicando acc = -1]
+
+= id (-3)
+    [evaluación aritmética de -1 - 2]
+
+= -3
+    [por definición de id]
+
+
+----------------------------------------------------------------
+d) foldr y foldl dan resultados distintos porque asocian la aplicacion
+del operador binario en sentidos opuestos: foldr asocia por la derecha,
+agrupando los términos de la forma 1 - (2 - (7 - (8 - 0))),
+mientras que foldl asocia por la izquierda, agrupando la operación 
+como (((0 - 1) - 2) - 7) - 8. Como la resta no es ni asociativa ni
+conmutativa, cambiar el orden de agrupación altera la evaluacion.
+Para que foldr op z xs == foldl op z xs se cumpla para cualquier lista 
+finita xs, se requiere que el operador op sea asociativo 
+($a \text{ op } (b \text{ op } c) = (a \text{ op } b) \text{ op } c$), 
+conmutativo ($a \text{ op } b = b \text{ op } a$), y que el valor z 
+sea el elemento neutro del operador ($a \text{ op } z = a$). 
+Es decir, que el tipo de los elementos junto con op y z formen 
+un monoide conmutativo.
